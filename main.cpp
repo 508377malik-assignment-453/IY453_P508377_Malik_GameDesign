@@ -1,12 +1,12 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <cstdlib>   
-#include <ctime>     
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
-class Item 
+class Item
 {
 public:
     string name;
@@ -14,7 +14,7 @@ public:
     int    defense_bonus;
     int    health_bonus;
 
-    Item(string item_name, int atk, int def, int hp) 
+    Item(string item_name, int atk, int def, int hp)
     {
         name           = item_name;
         attack_bonus   = atk;
@@ -35,7 +35,7 @@ public:
     int          score;
     vector<Item> inventory;
 
-    Player(string player_name) 
+    Player(string player_name)
     {
         name       = player_name;
         health     = 20;
@@ -44,15 +44,15 @@ public:
         defense    = 2;
         score      = 0;
     }
-    
-    void AddItem(Item item) 
+
+    void AddItem(Item item)
     {
         inventory.push_back(item);
         attack  += item.attack_bonus;
         defense += item.defense_bonus;
 
-        
-        if (item.health_bonus > 0) 
+
+        if (item.health_bonus > 0)
         {
             health += item.health_bonus;
             if (health > max_health) health = max_health;
@@ -62,7 +62,7 @@ public:
         cout << "You picked up: " << item.name << "!\n";
     }
 
-    void ShowStats() 
+    void ShowStats()
     {
         cout << "\n--- " << name << "'s Stats ---\n";
         cout << "Health  : " << health << " / " << max_health << "\n";
@@ -71,23 +71,23 @@ public:
         cout << "Score   : " << score << "\n";
     }
 
-    void ShowInventory() 
+    void ShowInventory()
     {
         cout << "\n--- Inventory ---\n";
-        if (inventory.empty()) 
+        if (inventory.empty())
         {
             cout << "You have no items.\n";
-        } 
-        else 
+        }
+        else
         {
-            for (int i = 0; i < inventory.size(); i++) 
+            for (int i = 0; i < inventory.size(); i++)
             {
                 cout << "- " << inventory[i].name << "\n";
             }
         }
     }
 
-    bool IsDead() 
+    bool IsDead()
     {
         return health <= 0;
     }
@@ -95,14 +95,14 @@ public:
 
 
 
-int GetChoice() 
+int GetChoice()
 {
     int choice;
-    while (true) 
+    while (true)
     {
         cout << "Enter choice (1 or 2): ";
         cin >> choice;
-        if (choice == 1 || choice == 2) 
+        if (choice == 1 || choice == 2)
         {
             return choice;
         }
@@ -111,20 +111,20 @@ int GetChoice()
 }
 
 
-int RandomNumber(int min, int max) 
+int RandomNumber(int min, int max)
 {
     return (rand() % (max - min + 1)) + min;
 }
 
 
-bool RunCombat(Player &player, string enemy_name,int enemy_attack, int enemy_defense, int enemy_health) 
+bool RunCombat(Player &player, string enemy_name,int enemy_attack, int enemy_defense, int enemy_health)
 {
 
     cout << "\n--- COMBAT: " << player.name << " vs " << enemy_name << " ---\n";
 
     int enemy_hp = enemy_health;
 
-    while (true) 
+    while (true)
     {
         int player_roll  = RandomNumber(1, 10);
         int player_score = player.attack + player_roll;
@@ -136,8 +136,30 @@ bool RunCombat(Player &player, string enemy_name,int enemy_attack, int enemy_def
              << " (total: " << player_score << ")"
              << "  vs  " << enemy_name << " rolls " << enemy_roll
              << " (total: " << enemy_score << ")\n";
-    }  
-        
+
+        if (player_score > enemy_score)
+        {
+            int damage = player.attack - enemy_defense;
+            if (damage < 1)
+            {
+                damage = 1;
+            }
+            enemy_hp -= damage;
+            cout << "You hit " << enemy_name << " for " << damage<< " damage! (Enemy HP: " << enemy_hp << ")\n";
+        }
+        else
+        {
+            int damage = enemy_attack - player.defense;
+            if (damage < 1)
+            {
+                damage = 1;
+            }
+            player.health -= damage;
+            cout << enemy_name << " hits you for " << damage<< " damage! (Your HP: " << player.health << ")\n";
+        }
+    }
+
+
 int main() {
         cout << "================================\n";
         cout << "     THE SHATTERED REALM\n";
@@ -151,7 +173,7 @@ int main() {
         cout << "\nWelcome, " << player.name << "! Your quest begins...\n";
 
 
-       
+
         // SCENE 0 — The Crossroads
         cout << "\n================================================\n";
         cout << "You stand at a crossroads outside the ruined city\n";
@@ -164,9 +186,9 @@ int main() {
         int opening_choice = GetChoice();
 
 
-       
+
         // BRANCH A — Forest Path
-        if (opening_choice == 1) 
+        if (opening_choice == 1)
         {
             // Scene 1A — Item Collection
             cout << "\nYou enter the Whispering Forest. A wounded fox\n";
@@ -174,13 +196,13 @@ int main() {
             cout << "1. Free the wounded fox\n";
             cout << "2. Grab the ranger's pack\n";
 
-            if (GetChoice() == 1) 
+            if (GetChoice() == 1)
             {
                 cout << "\nThe grateful fox leads you to a hidden cache.\n";
                 player.AddItem(Item("Elvish Boots", 0, 2, 0));
                 player.score += 25;
-            } 
-            else 
+            }
+            else
             {
                 cout << "\nThe pack contains useful supplies!\n";
                 player.AddItem(Item("Hunting Knife", 3, 0, 0));
@@ -193,10 +215,10 @@ int main() {
             cout << "1. Fight the goblin\n";
             cout << "2. Flee into the undergrowth\n";
 
-            if (GetChoice() == 1) 
+            if (GetChoice() == 1)
             {
                 bool won = RunCombat(player, "Goblin Scout", 6, 2, 8);
-                if (!won) 
+                if (!won)
                 {
                     cout << "\n=== GAME OVER ===\n";
                     cout << "Final Score: " << player.score << "\n";
@@ -205,8 +227,8 @@ int main() {
                 player.score += 75;
                 cout << "You find a brass key on the goblin!\n";
                 player.AddItem(Item("Brass Key", 0, 0, 0));
-            } 
-            else 
+            }
+            else
             {
                 cout << "\nYou escape but fall and take 2 damage.\n";
                 player.health -= 2;
