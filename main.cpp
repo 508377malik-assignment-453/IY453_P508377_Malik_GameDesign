@@ -157,6 +157,18 @@ bool RunCombat(Player &player, string enemy_name,int enemy_attack, int enemy_def
             player.health -= damage;
             cout << enemy_name << " hits you for " << damage<< " damage! (Your HP: " << player.health << ")\n";
         }
+
+		if (enemy_hp <= 0)
+		{
+            cout << "\nYou defeated the " << enemy_name << "!\n";
+            return true;
+        }
+        if (player.health <= 0)
+		{
+            player.health = 0;
+            cout << "\nYou were defeated by the " << enemy_name << "...\n";
+            return false;
+        }
     }
 
 
