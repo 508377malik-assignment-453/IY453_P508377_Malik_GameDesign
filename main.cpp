@@ -124,6 +124,8 @@ void PrintGameOver(Player &player)
 
 void PrintVictory(Player &player)
 {
+    player.score += 500;
+
     cout << "\n========================================\n";
     cout << "         *** YOU WIN! ***\n";
     cout << "========================================\n";
@@ -132,6 +134,17 @@ void PrintVictory(Player &player)
     cout << "\n--- Final Stats ---\n";
     player.ShowStats();
     player.ShowInventory();
+
+    cout << "\n--- Final Score: " << player.score << " ---\n";
+    if (player.score >= 900)
+        cout << "Rating: *** LEGENDARY DRAGON SLAYER ***\n";
+    else if (player.score >= 600)
+        cout << "Rating: ** GOLD CHAMPION **\n";
+    else if (player.score >= 300)
+        cout << "Rating: * SILVER ADVENTURER *\n";
+    else
+        cout << "Rating: BRONZE WANDERER\n";
+
     cout << "========================================\n";
 }
 
@@ -143,18 +156,19 @@ bool RunScene(Scene &scene, Player &player)
         PrintGameOver(player);
         return false;
     }
+    cout << "Current Score: " << player.score << "\n";
     AskToSave(player);
     return true;
 }
 
 int main()
 {
-    cout << "========================================\n";
-    cout << "       THE SHATTERED REALM\n";
-    cout << "========================================\n\n";
+    cout << "                                           ========================================\n";
+    cout << "                                                       THE SHATTERED REALM\n";
+    cout << "                                           ========================================\n\n";
 
-    cout << "1. New Game\n";
-    cout << "2. Load Saved Game\n";
+    cout << "                                               1. New Game\n";
+    cout << "                                               2. Load Saved Game\n";
     string menu_input;
     cin >> menu_input;
     cin.ignore();
@@ -173,7 +187,7 @@ int main()
             if (player_name.empty())
             {
                 player_name = "Adventurer";
-                cout << "No name entered — you shall be known as Adventurer.\n";
+                cout << "No name entered, you shall be known as Adventurer.\n";
             }
             player = Player(player_name);
         }
@@ -194,7 +208,7 @@ int main()
         if (player_name.empty())
         {
             player_name = "Adventurer";
-            cout << "No name entered — you shall be known as Adventurer.\n";
+            cout << "No name entered, you shall be known as Adventurer.\n";
         }
 
         player = Player(player_name);
@@ -242,8 +256,10 @@ int main()
                 player.AddItem(Item("Dried Meat",    0, 0, 2));
                 player.score += 25;
             }
+            cout << "Current Score: " << player.score << "\n";
             AskToSave(player);
         }
+
         player.currentScene = 2;
         CombatScene scene2A(
             "Goblin Ambush",
@@ -253,7 +269,7 @@ int main()
             "Flee into the undergrowth",
             "Goblin Scout", 6, 2, 8,
             75, true, Item("Brass Key", 0, 0, 0),
-            "You escape but fall — 2 damage from the fall.",
+            "You escape but fall -> 2 damage from the fall.",
             2, true, Item("Crude Sword", 2, 0, 0)
         );
         if (!RunScene(scene2A, player)) return 0;
@@ -278,7 +294,7 @@ int main()
             "Take the crystal shard",
             "Force the chest open",
             { "The shard pulses with warm light! +100 score!", false, Item("", 0, 0, 0), 100, 0 },
-            { "A trap needle strikes you for 4 damage!",        true,  Item("Steel Gauntlets", 0, 4, 0), 0, 4 }
+            { "A trap needle strikes you for 4 damage!", true,  Item("Steel Gauntlets", 0, 4, 0), 0, 4 }
         );
         if (!RunScene(scene4A, player)) return 0;
 
@@ -291,7 +307,7 @@ int main()
             "Back away slowly and take a detour",
             "Grey Wolf", 7, 1, 10,
             80, true, Item("Wolf Pelt", 0, 2, 0),
-            "The detour is longer — you arrive tired. -2 HP.",
+            "The detour is longer, you arrive tired. -2 HP.",
             2
         );
         if (!RunScene(scene5A, player)) return 0;
@@ -300,11 +316,12 @@ int main()
         ItemScene scene6A(
             "The Abandoned Camp",
             "A deserted campsite. A sword lies in the mud\n"
+            "A deserted campsite. A sword lies in the mud\n"
             "and a health potion sits on a rock.",
             "Take the damaged sword",
             "Take the health potion",
-            { "The blade is cracked — it will reduce your attack!", true, Item("Damaged Sword", -1, 0, 0), 0, 0 },
-            { "The potion restores your strength!",                 true, Item("Health Potion",  0, 0, 5), 0, 0 }
+            { "The blade is cracked, it will reduce your attack!", true, Item("Damaged Sword", -1, 0, 0), 0, 0 },
+            { "The potion restores your strength!", true, Item("Health Potion",  0, 0, 5), 0, 0 }
         );
         if (!RunScene(scene6A, player)) return 0;
 
@@ -364,7 +381,7 @@ int main()
             "The blacksmith offers weapons. The healer needs a guard.",
             "Trade with the blacksmith for an Iron Sword",
             "Guard the healer overnight",
-            { "The blacksmith hands you a fine blade!", true,  Item("Iron Sword",      5, 0, 0), 25, 0 },
+            { "The blacksmith hands you a fine blade!", true,  Item("Iron Sword", 5, 0, 0), 25, 0 },
             { "You guard the healer through the night safely.", true, Item("Healing Potion", 0, 0, 5), 50, 0 }
         );
         if (!RunScene(scene2B, player)) return 0;
@@ -403,7 +420,7 @@ int main()
             "Collapse the tower entrance to block him",
             "Cursed Knight", 9, 5, 14,
             110, true, Item("Knight's Chestplate", 0, 5, 0),
-            "The rubble slows him. You escape — but take 3 HP from debris.",
+            "The rubble slows him. You escape, but take 3 HP from debris.",
             3
         );
         if (!RunScene(scene5B, player)) return 0;
@@ -416,7 +433,7 @@ int main()
             "Take the strength elixir (+4 ATK)",
             "Take the shield charm (+3 DEF)",
             { "Power surges through your arms!", true, Item("Strength Elixir", 4, 0, 0), 25, 0 },
-            { "A faint shimmer surrounds you.",  true, Item("Shield Charm",    0, 3, 0), 25, 0 }
+            { "A faint shimmer surrounds you.",  true, Item("Shield Charm",0, 3, 0), 25, 0 }
         );
         if (!RunScene(scene6B, player)) return 0;
 
@@ -429,7 +446,7 @@ int main()
             "Try to swim across the river below",
             "Cave Troll", 10, 3, 18,
             120, true, Item("Troll Club", 4, 0, 0),
-            "The river current is brutal — you take 3 damage.\n"
+            "The river current is brutal -> you take 3 damage.\n"
             "But you spot a dagger wedged in the rocks!",
             3, true, Item("River Dagger", 2, 0, 0)
         );
@@ -444,14 +461,42 @@ int main()
             "Hurl your weapon at him from range",
             "Dark Mage", 11, 2, 12,
             130, true, Item("Mage Staff", 5, 0, 0),
-            "Your thrown weapon strikes the mage — he staggers!\n"
-            "He retaliates with a fire bolt — 4 damage to you!\n"
+            "Your thrown weapon strikes the mage -> he staggers!\n"
+            "He retaliates with a fire bolt -> 4 damage to you!\n>"
             "The mage flees, wounded.",
             4
         );
         if (!RunScene(scene8B, player)) return 0;
     }
 
-    PrintVictory(player);
-    return 0;
-}
+    cout << "\n========================================\n";
+    cout << "Both paths converge at the base of\n";
+    cout << "Malachar's volcanic mountain. The air\n";
+    cout << "burns hot. The final battle awaits.\n";
+    cout << "========================================\n";
+
+    player.currentScene = 20;
+    PuzzleScene sharedScene1(
+        "The Lava Oracle",
+        "A stone oracle rises from the lava fields.\n"
+        "'Answer me this: the more you use me, the\n"
+        "smaller I become. What am I?'",
+        "A candle",
+        "A shadow",
+        1, 60, 3,
+        true, Item("Oracle's Blessing", 2, 0, 0)
+    );
+    if (!RunScene(sharedScene1, player)) return 0;
+
+    player.currentScene = 21;
+    CombatScene sharedScene2(
+        "The Gargoyle's Perch",
+        "A stone gargoyle drops from the cliff above,\n"
+        "landing with a crash that shakes the ground.",
+        "Fight the gargoyle",
+        "Dive behind a boulder for cover",
+        "Stone Gargoyle", 9, 4, 14,
+        100, true, Item("Gargoyle Claw", 3, 0, 0),
+        "You hide safely but lava spatters you -> 3 damage.",
+        3
+    );
