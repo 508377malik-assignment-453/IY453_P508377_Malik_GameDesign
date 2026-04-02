@@ -499,4 +499,16 @@ int main()
         100, true, Item("Gargoyle Claw", 3, 0, 0),
         "You hide safely but lava spatters you -> 3 damage.",
         3
+    );if (!RunScene(sharedScene2, player)) return 0;
+
+    player.currentScene = 22;
+    ItemScene sharedScene3(
+        "The Merchant at the Gates",
+        "A shady merchant sits beside the volcano path.\n"
+        "He offers two things -> you can only take one.",
+        "Buy a strength potion (+3 ATK)",
+        "Rest by his fire and recover 5 HP",
+        { "The potion surges through you -> power!", true, Item("Strength Potion", 3, 0, 0), 25, 0 },
+        { "You rest and feel restored.",false, Item("", 0, 0, 0), 0, -5 }
     );
+    if (!RunScene(sharedScene3, player)) return 0;
