@@ -512,3 +512,30 @@ int main()
         { "You rest and feel restored.",false, Item("", 0, 0, 0), 0, -5 }
     );
     if (!RunScene(sharedScene3, player)) return 0;
+
+player.currentScene = 23;
+    PuzzleScene sharedScene4(
+        "The Ancient Inscription",
+        "Carved into the volcano wall is an anagram.\n"
+        "Unscramble it to reveal the safe path:\n"
+        "AGLME",
+        "FLAME",
+        "GLEAM",
+        1, 60, 4,
+        true, Item("Path Marker", 0, 0, 3)
+    );
+    if (!RunScene(sharedScene4, player)) return 0;
+
+    player.currentScene = 24;
+    CombatScene sharedScene5(
+        "The Fire Elemental",
+        "A roaring fire elemental blocks the tunnel\n"
+        "entrance, hurling fireballs at everything.",
+        "Fight the fire elemental",
+        "Sprint through the smoke on the left side",
+        "Fire Elemental", 11, 3, 16,
+        140, true, Item("Ember Shield", 0, 4, 0),
+        "You sprint through but breathe in smoke -> 4 damage.",
+        4
+    );
+    if (!RunScene(sharedScene5, player)) return 0;
