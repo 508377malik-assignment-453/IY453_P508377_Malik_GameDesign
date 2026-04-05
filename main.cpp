@@ -539,3 +539,28 @@ player.currentScene = 23;
         4
     );
     if (!RunScene(sharedScene5, player)) return 0;
+
+ player.currentScene = 25;
+    ItemScene sharedScene6(
+        "The Fallen Warrior",
+        "A slain warrior lies beside the path. Two items\n"
+        "rest beside her, a blade and a healing vial.",
+        "Take the warrior's blade (+5 ATK)",
+        "Drink the healing vial (+8 HP)",
+        { "The blade hums with ancient power!", true, Item("Warrior's Blade", 5, 0, 0), 25, 0 },
+        { "Warmth spreads through your wounds.", true, Item("Healing Vial",   0, 0, 8), 25, 0 }
+    );
+    if (!RunScene(sharedScene6, player)) return 0;
+
+    player.currentScene = 26;
+    PuzzleScene sharedScene7(
+        "The Sealed Chamber",
+        "The chamber door has a number lock.\n"
+        "Inscribed above it: 'What is the square\n"
+        "root of 144?'",
+        "12",
+        "14",
+        1, 60, 4,
+        true, Item("Chamber Key", 0, 0, 0)
+    );
+    if (!RunScene(sharedScene7, player)) return 0;
