@@ -564,3 +564,71 @@ player.currentScene = 23;
         true, Item("Chamber Key", 0, 0, 0)
     );
     if (!RunScene(sharedScene7, player)) return 0;
+ player.currentScene = 27;
+    CombatScene sharedScene8(
+        "The Lava Serpent",
+        "A massive serpent erupts from the magma pool,\n"
+        "coiling around the only path forward!",
+        "Fight the lava serpent",
+        "Push a boulder onto it from above",
+        "Lava Serpent", 12, 4, 20,
+        150, true, Item("Serpent Scale Armour", 0, 6, 0),
+        "The boulder slows it, but the tremor shakes\n"
+        "the floor and you take 2 damage.",
+        2
+    );
+    if (!RunScene(sharedScene8, player)) return 0;
+
+    player.currentScene = 28;
+    CombatScene sharedScene9(
+        "The Throne Room Gates",
+        "Two of Malachar's elite dragon guards block\n"
+        "the final door, armour glowing red with heat.",
+        "Fight the dragon guard",
+        "Bluff your way in as a servant of Malachar",
+        "Dragon Guard", 12, 5, 18,
+        160, true, Item("Dragon Guard Helmet", 0, 4, 0),
+        "Your bluff partially works, but one guard\n"
+        "catches on and strikes you for 5 damage.",
+        5
+    );
+    if (!RunScene(sharedScene9, player)) return 0;
+
+    player.currentScene = 29;
+    ItemScene sharedScene10(
+        "Malachar's Antechamber",
+        "You stand before the final door. Two choices\n"
+        "remain ->  prepare your body or your mind.",
+        "Study Malachar's weak point (+3 ATK for this fight)",
+        "Rest and recover all HP",
+        { "You spot a crack in his scales. +3 ATK!", true, Item("Battle Focus", 3, 0, 0), 25, 0 },
+        { "You rest fully and feel ready.",false, Item("", 0, 0, 0), 25, 0 }
+    );
+    if (!RunScene(sharedScene10, player)) return 0;
+
+    if (player.health < player.max_health)
+    {
+        player.health = player.max_health;
+    }
+
+    player.currentScene = 30;
+    CombatScene finalBoss(
+        "Malachar the Dragon",
+        "The chamber glows red hot. Malachar uncoils\n"
+        "from his throne, eyes like twin furnaces.\n"
+        "'Another mortal comes to die,' he rumbles.\n"
+        "The Crystal of Ages pulses on the dais.",
+        "Charge at Malachar with everything you have!",
+        "Circle and wait for an opening",
+        "Malachar the Dragon", 14, 6, 30,
+        500, false, Item("", 0, 0, 0),
+        "You circle carefully, but his tail sweeps\n"
+        "you across the chamber for 6 damage.",
+        6
+    );
+    if (!RunScene(finalBoss, player)) return 0;
+
+    PrintVictory(player);
+    return 0;
+}
+
